@@ -126,17 +126,17 @@ public class LoggInn extends Driver {
         System.out.println("Brukeren kan swipe side til høyre og venstre for å se informasjon før logge inn ");
         LoggInnPage loggInn = new LoggInnPage();
         loggInn.tillatTillatelser();
-        loggInn.swipe(800, 1000, 6000, "left");
-        loggInn.swipe(800, 1000, 6000, "left");
-        loggInn.swipe(800, 1000, 6000, "left");
-        loggInn.swipe(800, 1000, 6000, "left");
+        ReuseableMethods.swipe(800, 1000, 6000,0, "left");
+        ReuseableMethods.swipe(800, 1000, 6000,0,"left");
+        ReuseableMethods.swipe(800, 1000, 6000,0,"left");
+        ReuseableMethods.swipe(800, 1000, 6000,0, "left");
         System.out.println("Swipe 4 ganger til venstre");
         ReuseableMethods.vente(2);
         loggInn.bekreftSwipe(loggInn.left);
-        loggInn.swipe(200, 1000, 6000, "right");
-        loggInn.swipe(200, 1000, 6000, "right");
-        loggInn.swipe(200, 1000, 6000, "right");
-        loggInn.swipe(200, 1000, 6000, "right");
+        ReuseableMethods.swipe(200, 1000, 6000, 0,"right");
+        ReuseableMethods.swipe(200, 1000, 6000, 0,"right");
+        ReuseableMethods.swipe(200, 1000, 6000, 0,"right");
+        ReuseableMethods.swipe(200, 1000, 6000, 0,"right");
         loggInn.bekreftSwipe(loggInn.right);
         System.out.println("Swipe 4 ganger til høyre");
     }

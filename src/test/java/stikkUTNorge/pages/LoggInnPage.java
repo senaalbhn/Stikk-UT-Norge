@@ -129,9 +129,9 @@ public class LoggInnPage extends Driver {
         loggInn2.click();
     }
 
-    public void swipe(int x, int y, int width, String direction){
+    public void swipe(int x, int y, int width, int height, String direction){
         driver.executeScript("mobile: swipeGesture", ImmutableMap.of(
-                "left", x, "top", y, "width", width, "height", 0,
+                "left", x, "top", y, "width", width, "height", height,
                 "direction",  direction ,
                 "percent", 1
         ));
