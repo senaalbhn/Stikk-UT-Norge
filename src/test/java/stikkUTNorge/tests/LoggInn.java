@@ -3,15 +3,16 @@ package stikkUTNorge.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import stikkUTNorge.pages.LoggInnPage;
+import stikkUTNorge.utilities.ConfigReader;
 import stikkUTNorge.utilities.Driver;
 import stikkUTNorge.utilities.ReuseableMethods;
 
 public class LoggInn extends Driver {
-    String rigtigTelefonnummer = "96672778";
+    String rigtigTelefonnummer = ConfigReader.getProperty("telefonnummer");
     String feilTelefonnummer = "11111111";
-    String telefonnummerMed7Sifre = "9667277";
-    String telefonnummerMed11Sifre = "+4796672778";
-    String riktigKode = "";
+    String telefonnummerMed7Sifre = ConfigReader.getProperty("telefonnummerMed7Sifre");
+    String telefonnummerMed11Sifre = ConfigReader.getProperty("telefonnummerMed11Sifre");
+    String riktigKode = ConfigReader.getProperty("kode");
     String feilKode = "0000";
 
 
