@@ -23,6 +23,7 @@ public class Driver {
                 .setUdid("emulator-5554")
                 .setAppPackage("no.nivero.stikkut")
                 .setAppActivity("no.nivero.stikkut.MainActivity")
+                .setAutoGrantPermissions(true)
                 ;
 
         URL url = null;
@@ -35,6 +36,7 @@ public class Driver {
 
         driver = new AndroidDriver(url, options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
 
             return driver;
     }

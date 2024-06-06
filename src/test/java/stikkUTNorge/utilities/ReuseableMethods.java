@@ -4,11 +4,20 @@ import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Pause;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.Assert;
 import stikkUTNorge.pages.LoggInnPage;
+import stikkUTNorge.utilities.Driver;
 
-public class ReuseableMethods extends Driver {
+import java.time.Duration;
+import java.util.Collections;
+
+import static stikkUTNorge.utilities.Driver.driver;
+
+public class ReuseableMethods {
 
     public static void vente(int sekunder) {
         try {
@@ -33,9 +42,25 @@ public class ReuseableMethods extends Driver {
         ));
     }
 
+    public static void swipe(WebElement element, String direction) {
+        driver.executeScript("mobile: swipeGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "direction", direction,
+                "percent", 1
+        ));
+    }
+
     public static void flinge(int x, int y, int width, int height, String direction, int speed) {
         driver.executeScript("mobile: flingGesture", ImmutableMap.of(
                 "left", x, "top", y, "width", width, "height", height,
+                "direction", direction,
+                "speed", speed
+        ));
+    }
+
+    public static void flinge(WebElement element, String direction, int speed) {
+        driver.executeScript("mobile: flingGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
                 "direction", direction,
                 "speed", speed
         ));
@@ -48,12 +73,19 @@ public class ReuseableMethods extends Driver {
         ));
     }
 
-    public static void doubleClick(int x, int y){
-        driver.executeScript("mobile: doubleClickGesture", ImmutableMap.of(
-                "x",x,
-                "y",y
+    public static void click(WebElement element) {
+        driver.executeScript("mobile: clickGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId()
         ));
     }
+
+    public static void doubleClick(int x, int y) {
+        driver.executeScript("mobile: doubleClickGesture", ImmutableMap.of(
+                "x", x,
+                "y", y
+        ));
+    }
+
     public static void scroll(int x, int y, int width, int height, String direction, double percent) {
         driver.executeScript("mobile: scrollGesture", ImmutableMap.of(
                 "left", x, "top", y, "width", width, "height", height,
@@ -62,12 +94,26 @@ public class ReuseableMethods extends Driver {
         ));
     }
 
-    public static void scroll(WebElement element,  String direction, double percent ){
+    public static void scroll(WebElement element, String direction, double percent, int speed) {
         driver.executeScript("mobile: scrollGesture", ImmutableMap.of(
                 "elementId", ((RemoteWebElement) element).getId(),
                 "direction", direction,
-                "percent", percent
+                "percent", percent,
+                "speed", speed
+
         ));
+
+    }
+
+    public static void pointerFlinge(int startX, int startY, int endX, int endY, int pause) {
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence sequence = new Sequence(finger, 1)
+                .addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(),startX ,startY ))
+                .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger, Duration.ofMillis(pause)))
+                .addAction(finger.createPointerMove(Duration.ofMillis(80), PointerInput.Origin.viewport(), endX, endY))
+                .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singletonList(sequence));
 
     }
 

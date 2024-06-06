@@ -3,7 +3,6 @@ package stikkUTNorge.pages;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
-import io.appium.java_client.pagefactory.AndroidBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
@@ -15,7 +14,9 @@ import stikkUTNorge.utilities.ReuseableMethods;
 
 import java.awt.print.PageFormat;
 
-public class TurPage extends Driver {
+import static stikkUTNorge.utilities.Driver.driver;
+
+public class TurPage  {
 
     public TurPage() {
         PageFactory.initElements(new AppiumFieldDecorator(Driver.getDriver()), this);
@@ -23,18 +24,22 @@ public class TurPage extends Driver {
 
 
     @AndroidFindBy(accessibility = "Mine mål")
-    private WebElement mineMaal;
+    public WebElement mineMaal;
     @AndroidFindBy(accessibility = "Du kan justere dine mål når som helst. For å bestille Stikk UT!-kruset trenger du 7 turer.")
     private WebElement textMall;
     @AndroidFindBy(accessibility = "Lagre endringer")
     private WebElement lagreEndringer;
     @AndroidFindBy(accessibility = "Stikk UT! turmål")
     public WebElement stikkutTurmall;
+    @AndroidFindBy(xpath = "//android.view.View[@content-desc=\"Turer\n" +
+            "Sommer\n" +
+            "2024\"]/android.widget.ImageView[1]")
+    public WebElement stikkutTurmaller;
     @AndroidFindBy(accessibility = "Andre turmål")
     public WebElement andreTurmaal;
 
 
-    public void endringMaal(String hvilken, String  verdi) {
+    public static void endringMaal(String hvilken, String  verdi) {
 
         switch (hvilken.toLowerCase()) {
             case "registreringer":
@@ -56,24 +61,31 @@ public class TurPage extends Driver {
     public void endreTurmaal() {
         KeyEvent delete = new KeyEvent(AndroidKey.DEL);
         mineMaal.click();
-        ReuseableMethods.scroll(textMall,"up",1.0);
+        ReuseableMethods.scroll(textMall,"up",1.0,1000);
 
         ReuseableMethods.doubleClick(859, 566);
         driver.pressKey(delete);
         endringMaal("registreringer","50");
+        ReuseableMethods.vente(1);
 
-        ReuseableMethods.doubleClick(859, 740);
+        ReuseableMethods.doubleClick(859, 1055);
         driver.pressKey(delete);
         endringMaal("turmål","50");
+        ReuseableMethods.vente(1);
 
-        ReuseableMethods.doubleClick(859, 923);
+        ReuseableMethods.doubleClick(859, 1240);
         driver.pressKey(delete);
         endringMaal("kilometer","5000");
+        ReuseableMethods.vente(1);
 
-        ReuseableMethods.doubleClick(859, 1119);
+        ReuseableMethods.doubleClick(859, 1412);
         driver.pressKey(delete);
         endringMaal("høydemeter","5000");
+        ReuseableMethods.vente(1);
+        KeyEvent back= new KeyEvent(AndroidKey.BACK);
 
+        driver.pressKey(back);
+        ReuseableMethods.vente(5);
         lagreEndringer.click();
     }
 

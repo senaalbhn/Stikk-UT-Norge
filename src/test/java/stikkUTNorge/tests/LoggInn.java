@@ -126,7 +126,7 @@ public class LoggInn extends Driver {
         System.out.println("Brukeren kan swipe side til høyre og venstre for å se informasjon før logge inn ");
         LoggInnPage loggInn = new LoggInnPage();
         loggInn.tillatTillatelser();
-        ReuseableMethods.swipe(800, 1000, 6000,0, "left");
+        ReuseableMethods.swipe( 800, 1000, 6000,0, "left");
         ReuseableMethods.swipe(800, 1000, 6000,0,"left");
         ReuseableMethods.swipe(800, 1000, 6000,0,"left");
         ReuseableMethods.swipe(800, 1000, 6000,0, "left");

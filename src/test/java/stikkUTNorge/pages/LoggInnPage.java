@@ -15,7 +15,10 @@ import stikkUTNorge.utilities.ReuseableMethods;
 
 import java.net.MalformedURLException;
 
-public class LoggInnPage extends Driver {
+import static stikkUTNorge.utilities.Driver.driver;
+
+public class LoggInnPage{
+
     public LoggInnPage() {
         PageFactory.initElements(new AppiumFieldDecorator(Driver.getDriver()), this);
     }
@@ -59,9 +62,9 @@ public class LoggInnPage extends Driver {
 
     public void tillatTillatelser() {
         System.out.println("Stikk UT! Norge-app åpnet");
-        tillatLocation.click();
-        tillatelser.click();
-        backToStikkUT.click();
+        //tillatLocation.click();
+        //tillatelser.click();
+        //backToStikkUT.click();
         close.click();
         System.out.println("Alle tillatelser tillatt");
         sisteSide.click();
@@ -147,6 +150,11 @@ public class LoggInnPage extends Driver {
         driver.findElement(AppiumBy.xpath("//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View["+third+"]")).click();
         driver.findElement(AppiumBy.xpath("//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View["+fourth+"]")).click();
     }
+
+    @AndroidFindBy(xpath = "//android.view.View[@content-desc=\"Turer\n" +
+            "Sommer\n" +
+            "2024\"]/android.widget.ImageView[1]")
+    public WebElement stikkutTurmaller;
 
 
 
