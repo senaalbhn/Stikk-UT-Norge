@@ -82,10 +82,10 @@ public class Tur   {
 
     @Test
     public void testTC02() throws InterruptedException {
-        /*System.out.println("Brukren kan endre mål en og en ");
+        System.out.println("Brukren kan endre mål en og en ");
+        /*
         ReuseableMethods.loggInn(telefonnummer, kode);
         Thread.sleep(5000);
-
          */
 
         ReuseableMethods.pointerFlingeLoops(8,800,2000,142,2000,200);
@@ -143,7 +143,14 @@ public class Tur   {
         lagreEndringer.click();
     }
     @Test
-    public void testTC03(){
+    public void testTC03() throws InterruptedException {
+        TurPage turPage = new TurPage();
+        ReuseableMethods.loggInn(telefonnummer, kode);
+        Thread.sleep(5000);
+        System.out.println("Brukren kan søke Kommune på søkefelt og se turer på denne kommune");
+
+        turPage.skriveKommuneNavnPoSokefeltOgKlikk("Molde");
+        turPage.bekreftAtAlleTurerErPoRiktigKommune();
 
     }
 

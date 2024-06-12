@@ -7,7 +7,7 @@ import stikkUTNorge.utilities.ConfigReader;
 import stikkUTNorge.utilities.Driver;
 import stikkUTNorge.utilities.ReuseableMethods;
 
-public class LoggInn extends Driver {
+public class LoggInn  {
     String rigtigTelefonnummer = ConfigReader.getProperty("telefonnummer");
     String feilTelefonnummer = "11111111";
     String telefonnummerMed7Sifre = ConfigReader.getProperty("telefonnummerMed7Sifre");

@@ -13,10 +13,12 @@ import stikkUTNorge.utilities.Driver;
 import stikkUTNorge.utilities.ReuseableMethods;
 
 import java.awt.print.PageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import static stikkUTNorge.utilities.Driver.driver;
 
-public class TurPage  {
+public class TurPage extends ReuseableMethods  {
 
     public TurPage() {
         PageFactory.initElements(new AppiumFieldDecorator(Driver.getDriver()), this);
@@ -31,12 +33,27 @@ public class TurPage  {
     private WebElement lagreEndringer;
     @AndroidFindBy(accessibility = "Stikk UT! turmål")
     public WebElement stikkutTurmall;
-    @AndroidFindBy(xpath = "//android.view.View[@content-desc=\"Turer\n" +
+    @AndroidFindBy(accessibility = "Turer\n" +
             "Sommer\n" +
-            "2024\"]/android.widget.ImageView[1]")
+            "2024")
     public WebElement stikkutTurmaller;
     @AndroidFindBy(accessibility = "Andre turmål")
     public WebElement andreTurmaal;
+    @AndroidFindBy(xpath = "//android.view.View[@content-desc=\"© Kartverket\n" +
+            "© Kartverket\n" +
+            "Min Stikk UT!-statistikk\n" +
+            "Min bedrift-statistikk\n" +
+            "Hva er StikkUT?\"]/android.widget.ImageView")
+    public WebElement sokefelt;
+    @AndroidFindBy (className = "android.widget.EditText")
+    public WebElement editText;
+    @AndroidFindBy (accessibility = "Molde\n" +
+            "Kommune")
+    public WebElement moldeKommune;
+    @AndroidFindBy (xpath = "//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[9]/android.view.View//child::android.view.View")
+    public List<WebElement> turer;
+
+
 
 
     public static void endringMaal(String hvilken, String  verdi) {
@@ -88,6 +105,34 @@ public class TurPage  {
         ReuseableMethods.vente(5);
         lagreEndringer.click();
     }
+/*
+Klikk søkeffelt og skrive kommune navn
+Klikk kommune navnet
+Bekreft at alle nummer på Kommune som ble søkt
+Velg en tur fra kart
+Bekreft at turen på Kommune som ble søkt
+Komm tilbake til hovedside
+Klikk StikkUT! Turmål
+Bekreft alle turer på Kommune som ble søkt
+
+ */
+
+    public void skriveKommuneNavnPoSokefeltOgKlikk(String kommuneNavn){
+        sokefelt.click();
+        editText.sendKeys(kommuneNavn);
+        moldeKommune.click();
+    }
+    public void bekreftAtAlleTurerErPoRiktigKommune() throws InterruptedException {
+        stikkutTurmaller.click();
+        Thread.sleep(3000);
+        System.out.println(turer.size());
+        for (WebElement w : turer){
+            if (w.getAttribute("content-desc").contains("Molde")){
+               System.out.println(w.getAttribute("content-desc").split("\n")[1] + " er i Molde");
+            }
+        }
+    }
+
 
 
 }
