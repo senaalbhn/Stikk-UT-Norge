@@ -16,29 +16,30 @@ public class Driver {
 
     @BeforeTest
     public static AndroidDriver getDriver() {
+            if(driver==null) {
+                UiAutomator2Options options = new UiAutomator2Options()
+                        .setPlatformName("android")
+                        .setAutomationName("uiautomator2")
+                        .setUdid("emulator-5554")
+                        .setAppPackage("no.nivero.stikkut")
+                        .setAppActivity("no.nivero.stikkut.MainActivity")
+                        .setAutoGrantPermissions(true);
 
-        UiAutomator2Options options= new UiAutomator2Options()
-                .setPlatformName("android")
-                .setAutomationName("uiautomator2")
-                .setUdid("emulator-5554")
-                .setAppPackage("no.nivero.stikkut")
-                .setAppActivity("no.nivero.stikkut.MainActivity")
-                .setAutoGrantPermissions(true)
-                ;
-
-        URL url = null;
-        try {
-            url = new URL("http://0.0.0.0:4723");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        driver = new AndroidDriver(url, options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+                URL url = null;
+                try {
+                    url = new URL("http://0.0.0.0:4723");
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
 
 
+                driver = new AndroidDriver(url, options);
+                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+            }
             return driver;
     }
+
+
 
 }

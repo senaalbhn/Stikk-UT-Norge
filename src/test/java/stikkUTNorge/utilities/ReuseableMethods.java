@@ -57,6 +57,13 @@ public class ReuseableMethods {
                 "speed", speed
         ));
     }
+    public static void flingeBoolean(int x, int y, int width, int height, String direction, int speed) {
+        boolean canScrollMore = (Boolean) ((JavascriptExecutor) driver).executeScript("mobile: flingGesture", ImmutableMap.of(
+                "left", x, "top", y, "width", width, "height", height,
+                "direction", direction,
+                "speed", speed
+        ));
+    }
 
     public static void flinge(WebElement element, String direction, int speed) {
         driver.executeScript("mobile: flingGesture", ImmutableMap.of(
@@ -108,12 +115,28 @@ public class ReuseableMethods {
     public static void pointerFlinge(int startX, int startY, int endX, int endY, int pause) {
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence sequence = new Sequence(finger, 1)
-                .addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(),startX ,startY ))
+                .addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(), startX, startY))
                 .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
                 .addAction(new Pause(finger, Duration.ofMillis(pause)))
                 .addAction(finger.createPointerMove(Duration.ofMillis(80), PointerInput.Origin.viewport(), endX, endY))
                 .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(Collections.singletonList(sequence));
+
+    }
+
+
+    public static void pointerFlingeLoops(int rep, int startX, int startY, int endX, int endY, int pause) {
+
+        for (int i = 1; i < rep; i++) {
+            PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+            Sequence sequence = new Sequence(finger, 1)
+                    .addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(), startX, startY))
+                    .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                    .addAction(new Pause(finger, Duration.ofMillis(pause)))
+                    .addAction(finger.createPointerMove(Duration.ofMillis(50), PointerInput.Origin.viewport(), endX, endY))
+                    .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+            driver.perform(Collections.singletonList(sequence));
+        }
 
     }
 
