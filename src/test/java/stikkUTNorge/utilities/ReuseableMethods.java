@@ -8,10 +8,7 @@ import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.testng.Assert;
 import stikkUTNorge.pages.LoggInnPage;
-import stikkUTNorge.utilities.Driver;
-
 import java.time.Duration;
 import java.util.Collections;
 
@@ -58,11 +55,15 @@ public class ReuseableMethods {
         ));
     }
     public static void flingeBoolean(int x, int y, int width, int height, String direction, int speed) {
-        boolean canScrollMore = (Boolean) ((JavascriptExecutor) driver).executeScript("mobile: flingGesture", ImmutableMap.of(
-                "left", x, "top", y, "width", width, "height", height,
-                "direction", direction,
-                "speed", speed
-        ));
+        boolean canScrollMore = true;
+        while (canScrollMore) {
+             canScrollMore = (Boolean) ((JavascriptExecutor) driver).executeScript("mobile: flingGesture", ImmutableMap.of(
+                    "left", x, "top", y, "width", width, "height", height,
+                    "direction", direction,
+                    "speed", speed
+            ));
+        }
+
     }
 
     public static void flinge(WebElement element, String direction, int speed) {
@@ -133,7 +134,7 @@ public class ReuseableMethods {
                     .addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(), startX, startY))
                     .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
                     .addAction(new Pause(finger, Duration.ofMillis(pause)))
-                    .addAction(finger.createPointerMove(Duration.ofMillis(50), PointerInput.Origin.viewport(), endX, endY))
+                    .addAction(finger.createPointerMove(Duration.ofMillis(80), PointerInput.Origin.viewport(), endX, endY))
                     .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
             driver.perform(Collections.singletonList(sequence));
         }

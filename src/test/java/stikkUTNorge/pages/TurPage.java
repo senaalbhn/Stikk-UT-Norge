@@ -56,7 +56,7 @@ public class TurPage extends ReuseableMethods  {
 
 
 
-    public static void endringMaal(String hvilken, String  verdi) {
+    public void endringMaal(String hvilken, String  verdi) {
 
         switch (hvilken.toLowerCase()) {
             case "registreringer":
@@ -75,62 +75,69 @@ public class TurPage extends ReuseableMethods  {
 
     }
 
-    public void endreTurmaal() {
+    public void endreTurmaal(String registreringer,String turmol, String kilometer, String hoydemeter) throws InterruptedException {
         KeyEvent delete = new KeyEvent(AndroidKey.DEL);
+        KeyEvent back= new KeyEvent(AndroidKey.BACK);
+
         mineMaal.click();
-        ReuseableMethods.scroll(textMall,"up",1.0,1000);
+
+        ReuseableMethods.scroll(textMall,"down",1.0,5000);
 
         ReuseableMethods.doubleClick(859, 566);
         driver.pressKey(delete);
-        endringMaal("registreringer","50");
-        ReuseableMethods.vente(1);
+        driver.findElement(AppiumBy.xpath("//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[3]/android.view.View/android.widget.EditText[1]")).sendKeys("50");
 
         ReuseableMethods.doubleClick(859, 1055);
         driver.pressKey(delete);
-        endringMaal("turmål","50");
-        ReuseableMethods.vente(1);
+        driver.findElement(AppiumBy.xpath("//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[3]/android.view.View/android.widget.EditText[2]")).sendKeys(turmol);
 
         ReuseableMethods.doubleClick(859, 1240);
         driver.pressKey(delete);
-        endringMaal("kilometer","5000");
-        ReuseableMethods.vente(1);
+        driver.findElement(AppiumBy.xpath("//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[3]/android.view.View/android.widget.EditText[3]")).sendKeys(kilometer);
 
         ReuseableMethods.doubleClick(859, 1412);
         driver.pressKey(delete);
-        endringMaal("høydemeter","5000");
-        ReuseableMethods.vente(1);
-        KeyEvent back= new KeyEvent(AndroidKey.BACK);
+        driver.findElement(AppiumBy.xpath("//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[3]/android.view.View/android.widget.EditText[4]")).sendKeys(hoydemeter);
 
         driver.pressKey(back);
-        ReuseableMethods.vente(5);
+        Thread.sleep(2000);
         lagreEndringer.click();
     }
-/*
-Klikk søkeffelt og skrive kommune navn
-Klikk kommune navnet
-Bekreft at alle nummer på Kommune som ble søkt
-Velg en tur fra kart
-Bekreft at turen på Kommune som ble søkt
-Komm tilbake til hovedside
-Klikk StikkUT! Turmål
-Bekreft alle turer på Kommune som ble søkt
 
- */
+    public void skriveKommuneNavnPoSokefelt(String kommuneNavn){
 
-    public void skriveKommuneNavnPoSokefeltOgKlikk(String kommuneNavn){
+        String kommuneNavnEdit= kommuneNavn.substring(0,1).toUpperCase()+kommuneNavn.substring(1,kommuneNavn.length());
         sokefelt.click();
-        editText.sendKeys(kommuneNavn);
-        moldeKommune.click();
+        editText.sendKeys(kommuneNavnEdit);
     }
-    public void bekreftAtAlleTurerErPoRiktigKommune() throws InterruptedException {
+
+    public void klikkPoKommune(String kommuneNavn){
+        String kommuneNavnEdit= kommuneNavn.substring(0,1).toUpperCase()+kommuneNavn.substring(1,kommuneNavn.length());
+        WebElement kommune= driver.findElement(AppiumBy.xpath("(//android.widget.EditText[@text=\""+kommuneNavnEdit+"\"]//following-sibling::android.widget.ImageView[contains(@content-desc,\""+kommuneNavnEdit+"\")])[1]"));
+        kommune.click();
+    }
+
+    public void bekreftAtAlleTurerErPoRiktigKommune(String kommuneNavn) throws InterruptedException {
+        String kommuneNavnEdit= kommuneNavn.substring(0,1).toUpperCase()+kommuneNavn.substring(1,kommuneNavn.length());
         stikkutTurmaller.click();
         Thread.sleep(3000);
-        System.out.println(turer.size());
+        int counter=0;
         for (WebElement w : turer){
-            if (w.getAttribute("content-desc").contains("Molde")){
-               System.out.println(w.getAttribute("content-desc").split("\n")[1] + " er i Molde");
+            if (w.getAttribute("content-desc").contains(kommuneNavnEdit)){
+               System.out.println(w.getAttribute("content-desc").split("\n")[1] + " er i "+kommuneNavnEdit);
+               counter++;
             }
         }
+        Assert.assertEquals(turer.size(),counter);
+    }
+    public void bekreftAtKommuneErIkkePoStikkUtEnda(String kommuneNavn) throws InterruptedException {
+        String kommuneNavnEdit= kommuneNavn.substring(0,1).toUpperCase()+kommuneNavn.substring(1,kommuneNavn.length());
+        WebElement kommune= driver.findElement(AppiumBy.xpath("(//android.widget.ImageView[contains(@content-desc,\""+kommuneNavnEdit+"\")])[1]"));
+        String text=kommune.getAttribute("content-desc");
+        Assert.assertEquals(text,kommuneNavnEdit+"\n" +
+                "Ikke med i StikkUT! ennå\n" +
+                "Kommune");
+
     }
 
 

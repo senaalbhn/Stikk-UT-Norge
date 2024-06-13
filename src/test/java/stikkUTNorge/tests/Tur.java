@@ -2,36 +2,18 @@ package stikkUTNorge.tests;
 
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
-import io.appium.java_client.android.options.UiAutomator2Options;
-import io.appium.java_client.pagefactory.AndroidBy;
-import io.appium.java_client.pagefactory.AndroidFindBy;
-import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Pause;
-import org.openqa.selenium.interactions.PointerInput;
-import org.openqa.selenium.interactions.Sequence;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import stikkUTNorge.pages.LoggInnPage;
 import stikkUTNorge.pages.TurPage;
 import stikkUTNorge.utilities.ConfigReader;
-import stikkUTNorge.utilities.Driver;
 import stikkUTNorge.utilities.ReuseableMethods;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Duration;
-import java.util.Collections;
-
-import static stikkUTNorge.pages.TurPage.endringMaal;
 import static stikkUTNorge.utilities.Driver.driver;
 
-public class Tur   {
-    LoggInnPage loggInn = new LoggInnPage();
+public class Tur extends TurPage    {
     TurPage turPage = new TurPage();
     String telefonnummer = ConfigReader.getProperty("telefonnummer");
     String kode = ConfigReader.getProperty("kode");
@@ -75,6 +57,16 @@ public class Tur   {
         Thread.sleep(2000);
         WebElement lagreEndringer= driver.findElement(AppiumBy.accessibilityId("Lagre endringer"));
         lagreEndringer.click();
+    }
+    @Test
+    public void testTC01a() throws InterruptedException {
+        System.out.println("Brukren kan endre mål");
+        ReuseableMethods.loggInn(telefonnummer, kode);
+        Thread.sleep(5000);
+        ReuseableMethods.pointerFlingeLoops(12,800,2000,142,2000,200);
+        Thread.sleep(2000);
+        endreTurmaal("50","50","500","500");
+
 
 
 
@@ -149,9 +141,33 @@ public class Tur   {
         Thread.sleep(5000);
         System.out.println("Brukren kan søke Kommune på søkefelt og se turer på denne kommune");
 
-        turPage.skriveKommuneNavnPoSokefeltOgKlikk("Molde");
-        turPage.bekreftAtAlleTurerErPoRiktigKommune();
+        turPage.skriveKommuneNavnPoSokefelt("Molde");
+        turPage.klikkPoKommune("Molde");
+        turPage.bekreftAtAlleTurerErPoRiktigKommune("molde");
 
     }
+
+    @Test
+    public void testTC04() throws InterruptedException {
+        TurPage turPage = new TurPage();
+        ReuseableMethods.loggInn(telefonnummer, kode);
+        Thread.sleep(5000);
+        System.out.println("Hvis en kommune ikke med i SikkUT! Må ses på både søkefelt og StikkUT! Turmål");
+
+        turPage.skriveKommuneNavnPoSokefelt("Oslo");
+        turPage.bekreftAtKommuneErIkkePoStikkUtEnda("oslo");
+
+    }
+
+    @Test
+    public void test() throws InterruptedException {
+        System.out.println("først");
+        Thread.sleep(3000);
+        System.out.println("sekund");
+        ReuseableMethods.vente(3);
+        System.out.println("tredje");
+
+    }
+
 
 }
